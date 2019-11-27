@@ -15,7 +15,7 @@ usage
 -----
 
 ````
-from unie3api import uniE3Api
+from unie3api.unie3api import uniE3Api
 
 e3 = uniE3Api('https://unical.esse3.cineca.it/e3rest/api', 'TUOTOKEN')
 # or
