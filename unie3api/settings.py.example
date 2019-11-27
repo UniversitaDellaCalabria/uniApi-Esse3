@@ -1,0 +1,3 @@
+URL_API_BASE = 'https://unical.esse3.cineca.it/e3rest/api'
+E3_USERNAME = 'sdfsdfsdf'
+E3_PASSWORD = 'sdfsdfsdfsdfsdfds'
