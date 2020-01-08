@@ -43,7 +43,7 @@ class uniE3Api(object):
             if not tratto.get('aaId'):
                 tratto = i
                 continue
-            if i['aaId'] > tratto.get('aaId'):
+            if i['staStuCod'] == 'A' and i['aaId'] > tratto.get('aaId'):
                 tratto = i
 
         if tratto['statoTasse'] and tratto['staStuCod'] == 'A' and \
