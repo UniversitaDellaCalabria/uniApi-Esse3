@@ -31,21 +31,33 @@ class uniE3Api(object):
         _url = self.base_url + '/anagrafica-service-v2/utenti/{}/trattiAttivi'
         return self.get(_url.format(codice_fiscale.lower()))
 
+    # TODO: paginator
+    # def offerta_formativa(self):
+        # _url = self.base_url + '/offerta-service-v1/offerte'
+        # return self.get(_url)
+
     def attivo(self, codice_fiscale):
         """
         ordCod = CS-0001-01 -> corsi singoli
 
         torna lo stato attuale se attivo, altrimento None
         """
+
+        _ordCod_disabled = ['CS-0001-01']
+
         tratti = self.anagrafica(codice_fiscale)
         tratto = {}
         for i in tratti:
-            if not tratto.get('aaId'):
-                tratto = i
+            #import pdb; pdb.set_trace()
+            # ignore the Inactives
+            if i.get('staStuCod') != 'A':
                 continue
-            if i['staStuCod'] == 'A' and i['aaId'] >= tratto.get('aaId'):
+            # fill the first Active
+            if not i['statoTasse'] or i['dataChiusura']:
+                continue
+            if i['ordCod'] in _ordCod_disabled:
+                continue
+            # takes the latest
+            if i['aaId'] >= tratto.get('aaId', 0):
                 tratto = i
-
-        if tratto['statoTasse'] and tratto['staStuCod'] == 'A' and \
-           not tratto['dataChiusura'] and tratto['ordCod'] != 'CS-0001-01':
-            return tratto
+        return tratto
