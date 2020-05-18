@@ -36,7 +36,7 @@ class uniE3Api(object):
         # _url = self.base_url + '/offerta-service-v1/offerte'
         # return self.get(_url)
 
-    def attivo(self, codice_fiscale):
+    def abilitato_adas(self, codice_fiscale):
         """
         ordCod = CS-0001-01 -> corsi singoli
 
@@ -48,7 +48,6 @@ class uniE3Api(object):
         tratti = self.anagrafica(codice_fiscale)
         tratto = {}
         for i in tratti:
-            #import pdb; pdb.set_trace()
             # ignore the Inactives
             if i.get('staStuCod') != 'A':
                 continue
@@ -57,6 +56,31 @@ class uniE3Api(object):
                 continue
             if i['ordCod'] in _ordCod_disabled:
                 continue
+            # takes the latest
+            if i['aaId'] >= tratto.get('aaId', 0):
+                tratto = i
+        return tratto
+
+    def attivo(self, codice_fiscale):
+        """
+        ordCod = CS-0001-01 -> corsi singoli
+
+        torna lo stato attuale se attivo, altrimento None
+        """
+
+        #  _ordCod_disabled = ['CS-0001-01']
+
+        tratti = self.anagrafica(codice_fiscale)
+        tratto = {}
+        for i in tratti:
+            # ignore the Inactives
+            if i.get('staStuCod') != 'A':
+                continue
+            # fill the first Active
+            if not i['statoTasse'] or i['dataChiusura']:
+                continue
+            #  if i['ordCod'] in _ordCod_disabled:
+                #  continue
             # takes the latest
             if i['aaId'] >= tratto.get('aaId', 0):
                 tratto = i
