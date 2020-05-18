@@ -28,5 +28,8 @@ e3.carriera('CODICEFISCALEQUI')
 
 # interrogazione se lo studente ha una carriera attiva
 # esclude gli studenti a corso singolo
+e3.abilitato_adas('CODICEFISCALEQUI')
+
+# come la precedente ma include gli studenti a corso singolo
 e3.attivo('CODICEFISCALEQUI')
 ````
